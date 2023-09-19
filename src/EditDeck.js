@@ -1,25 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import { readDeck, updateDeck } from "./utils/api/index";
 
 function EditDeck() {
   const { deckId } = useParams();
   const history = useHistory();
-  const [deck, setDeck] = useState(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-  });
+  const [deck, setDeck] = useState({ name: "", description: "" });
 
   useEffect(() => {
     async function fetchData() {
       try {
         const loadedDeck = await readDeck(deckId);
         setDeck(loadedDeck);
-        setFormData({
-          name: loadedDeck.name,
-          description: loadedDeck.description,
-        });
       } catch (error) {
         console.error("Error fetching deck:", error);
       }
@@ -27,29 +19,19 @@ function EditDeck() {
     fetchData();
   }, [deckId]);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setDeck({ ...deck, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
-      await updateDeck({
-        id: deckId,
-        name: formData.name,
-        description: formData.description,
-      });
+      await updateDeck(deck);
       history.push(`/decks/${deckId}`);
     } catch (error) {
       console.error("Error updating deck:", error);
     }
-  };
-
-  const handleCancel = () => {
-    history.push(`/decks/${deckId}`);
   };
 
   if (!deck) {
@@ -58,43 +40,50 @@ function EditDeck() {
 
   return (
     <div>
-      <h1>Edit Deck</h1>
+      <nav aria-label="breadcrumb">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="breadcrumb-item">
+            <Link to={`/decks/${deckId}`}>{deck.name}</Link>
+          </li>
+          <li className="breadcrumb-item active" aria-current="page">
+            Edit Deck
+          </li>
+        </ol>
+      </nav>
+      <h2>Edit Deck</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="name" className="form-label">
-            Name
-          </label>
+        <div className="form-group">
+          <label htmlFor="name">Name</label>
           <input
             type="text"
             className="form-control"
             id="name"
             name="name"
-            value={formData.name}
+            value={deck.name}
             onChange={handleChange}
+            required
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="description" className="form-label">
-            Description
-          </label>
+        <div className="form-group">
+          <label htmlFor="description">Description</label>
           <textarea
             className="form-control"
             id="description"
             name="description"
-            value={formData.description}
+            value={deck.description}
             onChange={handleChange}
+            required
           />
         </div>
-        <button type="submit" className="btn btn-primary mr-2">
+        <button type="submit" className="btn btn-primary">
           Save
         </button>
-        <button
-          type="button"
-          className="btn btn-secondary"
-          onClick={handleCancel}
-        >
+        <Link to={`/decks/${deckId}`} className="btn btn-secondary ml-2">
           Cancel
-        </button>
+        </Link>
       </form>
     </div>
   );
