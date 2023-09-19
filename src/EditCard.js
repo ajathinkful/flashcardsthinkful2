@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams, useHistory } from "react-router-dom";
-import { readCard, updateCard } from "./utils/api/index";
+import { Link, useParams } from "react-router-dom";
+import { readDeck, readCard, updateCard } from "./utils/api/index";
 
 function EditCard() {
   const { deckId, cardId } = useParams();
-  const history = useHistory();
+  const [deck, setDeck] = useState(null);
   const [card, setCard] = useState({ front: "", back: "" });
 
   useEffect(() => {
     async function fetchData() {
       try {
+        const loadedDeck = await readDeck(deckId);
+        setDeck(loadedDeck);
         const loadedCard = await readCard(cardId);
         setCard(loadedCard);
       } catch (error) {
-        console.error("Error fetching card:", error);
+        console.error("Error fetching data:", error);
       }
     }
     fetchData();
-  }, [cardId]);
+  }, [deckId, cardId]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -28,11 +30,14 @@ function EditCard() {
     event.preventDefault();
     try {
       await updateCard(card);
-      history.push(`/decks/${deckId}`);
     } catch (error) {
       console.error("Error updating card:", error);
     }
   };
+
+  if (!deck || !card) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -42,10 +47,10 @@ function EditCard() {
             <Link to="/">Home</Link>
           </li>
           <li className="breadcrumb-item">
-            <Link to={`/decks/${deckId}`}>Deck {deckId}</Link>
+            <Link to={`/decks/${deckId}`}>Deck: {deck.name}</Link>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
-            Edit Card
+            Edit Card {cardId}
           </li>
         </ol>
       </nav>

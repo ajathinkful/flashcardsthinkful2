@@ -7,7 +7,6 @@ function Home() {
   const [decks, setDecks] = useState([]);
   function fetchData() {
     listDecks().then((data) => setDecks(data));
-    console.log("sw");
   }
   useEffect(fetchData, []);
 

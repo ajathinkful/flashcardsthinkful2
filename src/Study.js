@@ -39,7 +39,9 @@ function Study() {
   };
 
   const handleAddCards = () => {
-    history.push(`/decks/${deckId}/addCard`);
+    if (deck.cards.length < 3) {
+      history.push(`/decks/${deckId}/cards/new`);
+    }
   };
 
   if (!deck) {
@@ -64,7 +66,8 @@ function Study() {
             </li>
           </ol>
         </nav>
-        <h1>Not enough cards</h1>
+        <h1>{deck.name}: Study</h1>
+        <h2>Not enough cards</h2>
         <p>
           You need at least 3 cards to study. There are {deck.cards.length}{" "}
           cards in this deck.
@@ -91,7 +94,7 @@ function Study() {
           </li>
         </ol>
       </nav>
-      <h1>Study: {deck.name}</h1>
+      <h1>{deck.name}: Study</h1>
       <div className="card">
         <div className="card-body">
           <h5 className="card-title">

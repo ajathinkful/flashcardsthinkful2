@@ -28,7 +28,7 @@ function Deck() {
   };
 
   const handleAddCards = () => {
-    history.push(`/decks/${deckId}/addCard`); // Make sure it's "/addCard" instead of "/cards/new"
+    history.push(`/decks/${deckId}/cards/new`); // Updated URL
   };
 
   const handleDeleteDeck = async () => {
