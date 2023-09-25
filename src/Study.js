@@ -30,6 +30,9 @@ function Study() {
       if (restart) {
         setCardIndex(0);
         setFlipped(false); // Reset flip when restarting
+      } else {
+        // If the user chooses not to restart, navigate to the home screen
+        history.push("/");
       }
     }
   };

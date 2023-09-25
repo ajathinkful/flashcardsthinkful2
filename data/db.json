@@ -60,16 +60,10 @@
       "id": 7
     },
     {
-      "front": "ad",
-      "back": "asdas",
+      "front": "adasdasdasd",
+      "back": "asdasasdssssasd hashi",
       "deckId": 3,
       "id": 8
-    },
-    {
-      "front": "sw",
-      "back": "sw",
-      "deckId": 3,
-      "id": 9
     },
     {
       "front": "sw",
@@ -87,13 +81,25 @@
       "front": "sw",
       "back": "sw",
       "deckId": 4,
-      "id": 12
+      "id": 14
     },
     {
-      "front": "sw",
-      "back": "sw",
+      "front": "asd",
+      "back": "asdasdasd",
+      "deckId": 4,
+      "id": 15
+    },
+    {
+      "front": "hashi",
+      "back": "hashi",
       "deckId": 3,
-      "id": 13
+      "id": 16
+    },
+    {
+      "front": "swsws",
+      "back": "swsws",
+      "deckId": 3,
+      "id": 17
     }
   ]
 }
